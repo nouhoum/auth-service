@@ -4,7 +4,7 @@ import play.api.db.slick.Profile
 import models.User
 import scala.slick.driver.JdbcDriver
 
-trait UsersRepositoryComponent { this: Profile =>
+trait UserRepositoryComponent { this: Profile =>
   import profile.simple._
 
   def db: Database
@@ -20,9 +20,9 @@ trait UsersRepositoryComponent { this: Profile =>
 
   val users = TableQuery[Users]
 
-  def usersRepository: UsersRepository = new UsersRepository {}
+  def userRepository: UserRepository = new UserRepository {}
 
-  trait UsersRepository {
+  trait UserRepository {
     def existsWithEmail(email: String)(implicit session: Session): Boolean =
       users.filter(_.email === email).exists.run
 
@@ -38,9 +38,4 @@ trait UsersRepositoryComponent { this: Profile =>
       case (u, id) => u.copy(id = Option(id))
     }
   }
-}
-
-trait ProductionUsersRepositoryComponent extends UsersRepositoryComponent with Profile {
-  override lazy val db = play.api.db.slick.DB(play.api.Play.current)
-  lazy val profile: JdbcDriver = db.driver
 }

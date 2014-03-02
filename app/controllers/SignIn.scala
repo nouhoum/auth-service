@@ -3,9 +3,9 @@ package controllers
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import repositories.{ ProductionUsersRepositoryComponent, UsersRepositoryComponent }
+import services.{ UserServiceComponent, ProductionUserServiceComponent }
 
-trait SignIn { this: UsersRepositoryComponent with Controller =>
+trait SignIn { this: Controller with UserServiceComponent =>
   def signin = Action { implicit request =>
     Ok(views.html.signin(loginForm))
   }
@@ -21,8 +21,7 @@ trait SignIn { this: UsersRepositoryComponent with Controller =>
     tuple(
       "email" -> text, "password" -> text
     ).verifying("Email or password is wrong", credentials =>
-        db.withSession(implicit session => usersRepository.authenticate(credentials._1, credentials._2).isDefined)
-      ))
+        userService.authenticate(credentials._1, credentials._2).isDefined))
 }
 
-object SignIn extends SignIn with Controller with ProductionUsersRepositoryComponent
+object SignIn extends SignIn with Controller with ProductionUserServiceComponent

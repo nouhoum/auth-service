@@ -2,19 +2,18 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import repositories.{ ProductionUsersRepositoryComponent, UsersRepositoryComponent }
 import scala.concurrent.Future
+import services.{ UserServiceComponent, ProductionUserServiceComponent }
 
-trait Application { this: Controller with UsersRepositoryComponent =>
+trait Application { this: Controller with UserServiceComponent =>
   def index = Action {
     Ok(views.html.index("OAuth 2 server"))
   }
 
   def allUsers = Action.async { implicit request =>
-    db.withSession { implicit session =>
-      Future.successful(Ok(views.html.users(usersRepository.all())))
-    }
+
+    Future.successful(Ok(views.html.users(userService.allUsers())))
   }
 }
 
-object Application extends Application with Controller with ProductionUsersRepositoryComponent
+object Application extends Application with Controller with ProductionUserServiceComponent

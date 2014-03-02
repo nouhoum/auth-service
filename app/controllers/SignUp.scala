@@ -3,10 +3,10 @@ package controllers
 import play.api.mvc.{ Action, Controller }
 import play.api.data._
 import play.api.data.Forms._
-import repositories.{ ProductionUsersRepositoryComponent, UsersRepositoryComponent }
 import models.User
+import services.{ ProductionUserServiceComponent, UserServiceComponent }
 
-trait SignUp { this: Controller with UsersRepositoryComponent =>
+trait SignUp { this: Controller with UserServiceComponent =>
   def signup = Action { implicit request =>
     Ok(views.html.signup(form))
   }
@@ -16,9 +16,7 @@ trait SignUp { this: Controller with UsersRepositoryComponent =>
       errors =>
         BadRequest(views.html.signup(errors)),
       user => {
-        db.withSession { implicit session =>
-          usersRepository.insert(user)
-        }
+        userService.insert(user)
         Redirect(routes.Application.index)
       }
     )
@@ -28,11 +26,11 @@ trait SignUp { this: Controller with UsersRepositoryComponent =>
     mapping(
       "id" -> optional(longNumber),
       "email" -> email.verifying("A user with this email exists",
-        email => !db.withSession(implicit session => usersRepository.existsWithEmail(email))
+        email => !userService.existsWithEmail(email)
       ),
       "password" -> text(minLength = 4),
       "name" -> optional(text)
     )(User.apply)(User.unapply))
 }
 
-object SignUp extends SignUp with Controller with ProductionUsersRepositoryComponent
+object SignUp extends SignUp with Controller with ProductionUserServiceComponent

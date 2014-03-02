@@ -8,8 +8,8 @@ GET         /users                    controllers.Application.allUsers
 GET         /signup                   controllers.SignUp.signup
 POST        /signup                   controllers.SignUp.create
 
-GET         /signin                   controllers.SignIn.signin
-POST        /signin                   controllers.SignIn.authenticate
+GET         /login                    controllers.SignIn.signin
+POST        /login                    controllers.SignIn.authenticate
 
 POST        /auth/access_token        controllers.OAuth.accessToken
 POST        /auth/refresh             controllers.OAuth.refresh
