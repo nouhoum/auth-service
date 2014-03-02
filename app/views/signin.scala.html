@@ -1,0 +1,31 @@
+@(signinForm: Form[(String, String)])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Sign up page") {
+    @signinForm.globalError.map { error =>
+        <p class="error">
+            @error.message
+        </p>
+    }
+    @helper.form(action = routes.SignIn.authenticate) {
+        <fieldset>
+            <legend>Sign in</legend>
+            @inputText(
+                signinForm("email")
+                , '_label -> "Email"
+                ,'_showConstraints -> false
+            )
+
+            @inputPassword(
+                signinForm("password")
+                , '_label -> "Password"
+            )
+        </fieldset>
+
+        <div>
+            <input type="submit" value="Sign in">
+        </div>
+    }
+}

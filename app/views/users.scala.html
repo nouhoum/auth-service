@@ -1,0 +1,10 @@
+@(users: List[models.User])
+
+@main("Welcome to Play") {
+    <h1>Registered users</h1>
+    <ul>
+        @users.map {user =>
+          <li>@user.email</li>
+        }
+    </ul>
+}

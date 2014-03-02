@@ -1,0 +1,36 @@
+@(signupForm: Form[models.User])
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Sign up page") {
+    @signupForm.globalError.map { error =>
+        <p class="error">
+            @error.message
+        </p>
+    }
+    @helper.form(action = routes.SignUp.create) {
+        <fieldset>
+            <legend>Sign up</legend>
+            @inputText(
+                signupForm("name")
+                , '_label -> "Name"
+            )
+
+            @inputText(
+                signupForm("email")
+                , '_label -> "Email"
+                ,'_showConstraints -> false
+            )
+
+            @inputPassword(
+                signupForm("password")
+                , '_label -> "Password"
+            )
+        </fieldset>
+
+        <div>
+            <input type="submit" value="Sign Up">
+        </div>
+    }
+}
