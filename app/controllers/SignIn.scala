@@ -17,6 +17,10 @@ trait SignIn { this: Controller with UserServiceComponent =>
     )
   }
 
+  def logout = Action { implicit request =>
+    Redirect(routes.Application.index).withNewSession
+  }
+
   val loginForm = Form(
     tuple(
       "email" -> text, "password" -> text

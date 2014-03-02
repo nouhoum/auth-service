@@ -11,9 +11,11 @@ POST        /signup                   controllers.SignUp.create
 GET         /login                    controllers.SignIn.signin
 POST        /login                    controllers.SignIn.authenticate
 
-POST        /auth/access_token        controllers.OAuth.accessToken
-POST        /auth/refresh             controllers.OAuth.refresh
-POST        /auth/revoke              controllers.OAuth.revoke
+GET         /logout                   controllers.SignIn.logout
+
+POST        /auth/access_token        controllers.OAuth2.accessToken
+POST        /auth/refresh             controllers.OAuth2.refresh
+POST        /auth/revoke              controllers.OAuth2.revoke
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file             controllers.Assets.at(path="/public", file)
